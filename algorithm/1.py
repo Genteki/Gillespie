@@ -48,7 +48,7 @@ def evolute(init_ss, r, c, tMax):
         p0 = p.sum()
         p = p / p0
         dt = -np.log(np.random.random())/p0
-        reaction_i = np.random.choice(range(reactions.shape[0]), p=p)
+        reaction_i = np.random.choice(range(r.shape[0]), p=p)
         for i in range(3):
             ss[i] += reactions[reaction_i, i]
         t = t+dt
