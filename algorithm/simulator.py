@@ -29,6 +29,13 @@ class gillespieSystem:
         if (reactant.shape[0] != self.n) or (product.shape[0]!=self.n):
             print("size error: the two vector's size should be same as n")
             return
+        
+        if (self.reactants.size==0):
+            self.reactants = np.array([reactant])
+            self.products = np.array([product])
+            self.cr = np.array([c])
+            print(self.reactants, self.cr)
+            return
         self.products = np.append(self.products, np.array([product]),axis=0)
         self.reactants = np.append(self.reactants, np.array([reactant]),axis=0)
         self.cr = np.append(self.cr, np.array([c]))
@@ -69,7 +76,8 @@ def test():
         [0, 0, 1]    
     ], dtype=np.int)
     c = np.array([1e-4])
-    system = gillespieSystem(3,ss,reactants,products,c)
+    system = gillespieSystem(3,ss)
+    system.addReaction(np.array([1,1, 0]), np.array([0, 0, 1]), 1e-4)
     system.addReaction(np.array([0, 0, 1]), np.array([1, 1, 0]), 1e-2)
     his = system.simulate(100)
     print(his)
