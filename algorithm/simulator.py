@@ -5,6 +5,7 @@ import seaborn as sns
 import json
 import sys
 
+
 config = json.load(open('config.json'))
 projPath = config["projectPath"]
 sys.path.append(projPath)
@@ -59,7 +60,7 @@ class gillespieSystem:
         ss = self.ss.copy()
         history = np.array([np.append([t], ss)])
         while t < maxTime:
-            print(ss)
+            # print(ss)
             p = self.getProspencities(ss)
             t += self.getDeltaTime(p)
             i = self.getReaction(p)
@@ -69,13 +70,6 @@ class gillespieSystem:
 
 def test():
     ss = np.array([1e2, 1e2, 0],dtype=np.int)
-    reactants = np.array([
-        [1, 1, 0]
-    ], dtype=np.int)
-    products = np.array([
-        [0, 0, 1]    
-    ], dtype=np.int)
-    c = np.array([1e-4])
     system = gillespieSystem(3,ss)
     system.addReaction(np.array([1,1, 0]), np.array([0, 0, 1]), 1e-4)
     system.addReaction(np.array([0, 0, 1]), np.array([1, 1, 0]), 1e-2)
@@ -84,8 +78,3 @@ def test():
 
 if __name__  == "__main__":
     test()
-
-
-
-        
-
