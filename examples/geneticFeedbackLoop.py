@@ -18,11 +18,8 @@ from algorithm.simulator import *
 # 6 P->None, kf
 
 # parameters
-rho_u = 60
-sigma_b = .004
-rho_b = 25
-sigma_u = .25
-theta = 0
+rho_u = 60;sigma_b = .004;rho_b = 25;sigma_u = .25;theta = 0
+# rho_u = 60; theta = 0; sigma_b = 0.004 ; rho_b = 5; sigma_u = .5
 kf = 1
 ru = rho_u*kf
 rb = rho_b*kf
@@ -50,32 +47,28 @@ products = np.array([
 # reaction parameters
 rates = np.array([rb, kb, su, ru, sb, kf])
 # intial state
-ss = np.array([1, 1, 0])
+ss = np.array([1, 0, 0])
 # initialize the system
 system = gillespieSystem(3, ss, reactant, products, rates)
 # time to reach steady-state
 t_ss = 20
 # maxtime
-tMax = t_ss*5
+tMax = 21
 # repeat time
-N = 100
+N = 4000
 # data
 n=None
 newHistory = system.simulate(tMax)
-for j in range(newHistory.shape[0]):
-    if newHistory[j, 0] > t_ss:
-        newHistory = newHistory[j:].T[3]
-        n = newHistory
-        break
+n = np.array([])
 
 # loop start
 for i in range(N):
     newHistory = system.simulate(tMax)
     for j in range(newHistory.shape[0]):
         if newHistory[j, 0] > t_ss:
-            print("No.", i+1, "simulation")
             newHistory = newHistory[j:].T[3]
-            n = np.append(n,newHistory)
+            print("No.", i+1, "simulation", newHistory.mean())
+            n = np.append(n,newHistory[-1])
             break
 
 # plot
@@ -88,4 +81,4 @@ ax.set_xlabel("protein")
 ax.set_ylabel("P(n)")
 ax.set_title("kf = 0.1, [Du,Db,p] = [1,0,0]")
 ax.plot(range(0,99), count)
-fig.savefig("output/theta2.png", dpi=300)
+fig.savefig("output/theta.png", dpi=300)
