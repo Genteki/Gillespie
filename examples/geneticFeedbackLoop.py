@@ -51,11 +51,11 @@ ss = np.array([1, 0, 0])
 # initialize the system
 system = gillespieSystem(3, ss, reactant, products, rates)
 # time to reach steady-state
-t_ss = 20
+t_ss = 10
 # maxtime
-tMax = 21
+tMax = 11
 # repeat time
-N = 4000
+N = 2000
 # data
 n=None
 newHistory = system.simulate(tMax)
@@ -68,17 +68,20 @@ for i in range(N):
         if newHistory[j, 0] > t_ss:
             newHistory = newHistory[j:].T[3]
             print("No.", i+1, "simulation", newHistory.mean())
-            n = np.append(n,newHistory[-1])
+            n = np.append(n,newHistory.mean())
             break
 
 # plot
-(count, bins, ignored) = plt.hist(n, bins=range(100), density=True)
+'''
+(count, bins, ignored) = plt.hist(n, bins=np.linspace(0,99,50), density=True)
 plt.close()
+'''
 sns.set_style("whitegrid")
 fig = plt.figure()
 ax = fig.subplots()
 ax.set_xlabel("protein")
 ax.set_ylabel("P(n)")
-ax.set_title("kf = 0.1, [Du,Db,p] = [1,0,0]")
-ax.plot(range(0,99), count)
+ax.set_title("kf = 1, [Du,Db,p] = [1,0,0]")
+# ax.plot(bins[1:], count)
+y, bins, patches = plt.hist(n, bins=50,range=(0,100),density=True)
 fig.savefig("output/theta.png", dpi=300)
